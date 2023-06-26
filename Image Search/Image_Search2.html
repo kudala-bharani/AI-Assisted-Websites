@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Search</title>
+  <style>
+    body {
+      background-color: #222;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    #container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+    }
+
+    #searchBox {
+      margin-bottom: 10px;
+      padding: 5px;
+      font-size: 16px;
+      width: 100%;
+      max-width: 300px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    #generateBtn {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #generateBtn:hover {
+      background-color: #555;
+    }
+
+    #imageContainer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .image-container {
+      width: 33.33%;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+
+    .image-container img {
+      display: block;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Image Search</h1>
+    <input type="text" id="searchBox" placeholder="Enter a keyword">
+    <button id="generateBtn">Generate</button>
+    <div id="imageContainer"></div>
+  </div>
+
+  <script>
+    const searchBox = document.getElementById('searchBox');
+    const generateBtn = document.getElementById('generateBtn');
+    const imageContainer = document.getElementById('imageContainer');
+
+    generateBtn.addEventListener('click', () => {
+      const keyword = searchBox.value.trim();
+      if (!keyword) {
+        alert('Please enter a keyword.');
+        return;
+      }
+
+      clearImageContainer();
+
+      // Using the Unsplash API to fetch images related to the keyword
+      const apiUrl = `https://api.unsplash.com/search/photos?query=${keyword}&per_page=6&client_id=Fe_TORsWyHEXxFNHvLSJv-VXQLe3xmz867H1GXSW3aw`;
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const images = data.results;
+          if (images.length === 0) {
+            alert('No images found for the given keyword.');
+            return;
+          }
+
+          images.forEach(image => {
+            const imgElement = document.createElement('img');
+            imgElement.src = image.urls.regular;
+            const imageContainerDiv = document.createElement('div');
+            imageContainerDiv.classList.add('image-container');
+            imageContainerDiv.appendChild(imgElement);
+            imageContainer.appendChild(imageContainerDiv);
+          });
+        })
+        .catch(error => {
+          console.error(error);
+          alert('Failed to fetch images. Please try again.');
+        });
+    });
+
+    function clearImageContainer() {
+      while (imageContainer.firstChild) {
+        imageContainer.firstChild.remove();
+      }
+    }
+  </script>
+</body>
+</html>
