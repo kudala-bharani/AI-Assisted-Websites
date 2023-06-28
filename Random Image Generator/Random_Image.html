@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Random Image Generator</title>
+  <style>
+    body {
+      background-color: #222;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    #container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+    }
+
+    #generateBtn {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #generateBtn:hover {
+      background-color: #555;
+    }
+
+    #image {
+      display: none;
+      width: 80%;
+      max-width: 100%;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Random Image Generator</h1>
+    <button id="generateBtn">Generate</button>
+    <img id="image" alt="Random Image">
+  </div>
+
+  <script>
+    const generateBtn = document.getElementById('generateBtn');
+    const image = document.getElementById('image');
+
+    generateBtn.addEventListener('click', () => {
+      image.style.display = 'none'; // Hide image before loading
+
+      // Using the Picsum Photos API to fetch a random image
+      fetch('https://picsum.photos/500/300')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch the image.');
+          }
+          return response.url;
+        })
+        .then(imageUrl => {
+          image.src = imageUrl;
+          image.style.display = 'block'; // Show image after it's loaded
+        })
+        .catch(error => {
+          console.error(error);
+          alert('Failed to fetch the image. Please try again.');
+        });
+    });
+  </script>
+</body>
+</html>
