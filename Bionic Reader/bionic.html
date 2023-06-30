@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bionic Reader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #252525;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 500px;
+      width: 90%;
+      padding: 20px;
+      background-color: #363636;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #454545;
+      color: #fff;
+      border: 1px solid #6c6c6c;
+      border-radius: 3px;
+      resize: none;
+    }
+    
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    #output {
+      border: 1px solid #6c6c6c;
+      padding: 10px;
+      width: 100%;
+      min-height: 100px;
+      margin-bottom: 10px;
+      background-color: #454545;
+      color: #fff;
+      border-radius: 3px;
+    }
+    
+    .highlight {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bionic Reader</h1>
+    <textarea id="input" placeholder="Enter your text"></textarea>
+    <button id="generate" onclick="generateOutput()">Generate</button>
+    <div id="output"></div>
+    <button id="copy" onclick="copyOutput()">Copy</button>
+  </div>
+
+  <script>
+    function generateOutput() {
+      var inputText = document.getElementById("input").value;
+      var words = inputText.split(" ");
+      var outputText = "";
+
+      for (var i = 0; i < words.length; i++) {
+        var word = words[i];
+        var highlightedWord = "<span class='highlight'>" + word.substr(0, Math.ceil(word.length / 2)) + "</span>" + word.substr(Math.ceil(word.length / 2));
+        outputText += highlightedWord + " ";
+      }
+
+      document.getElementById("output").innerHTML = outputText;
+    }
+
+    function copyOutput() {
+      var outputElement = document.getElementById("output");
+      var range = document.createRange();
+      range.selectNode(outputElement);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      window.getSelection().removeAllRanges();
+      alert("Copied to clipboard!");
+    }
+  </script>
+</body>
+</html>

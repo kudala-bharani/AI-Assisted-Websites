@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bionic Reader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #252525;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      height: 100vh; /* Set body height to full viewport height */
+    }
+    
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #363636;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    #input {
+      width: 100%;
+      height: 50%;
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #454545;
+      color: #fff;
+      border: 1px solid #6c6c6c;
+      border-radius: 3px;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      overflow-y: auto; /* Enable vertical scrolling for larger texts */
+    }
+    
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      background-color: #2196F3;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #1976D2;
+    }
+    
+    .highlight {
+      font-weight: bold;
+    }
+
+    .output-container {
+      width: 100%;
+      height: 50%;
+      overflow-y: auto; /* Enable vertical scrolling for larger texts */
+    }
+
+    .output {
+      width: 100%;
+      padding: 10px;
+      background-color: #454545;
+      color: #fff;
+      border: 1px solid #6c6c6c;
+      border-radius: 3px;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bionic Reader</h1>
+    <pre id="input" contenteditable="true" placeholder="Enter your text"></pre>
+    <button id="generate" onclick="generateOutput()">Generate</button>
+    <div class="output-container">
+      <div id="output" class="output"></div>
+    </div>
+    <button id="copy" onclick="copyOutput()">Copy</button>
+  </div>
+
+  <script>
+    function generateOutput() {
+      var inputText = document.getElementById("input").innerText;
+      var words = inputText.split(" ");
+      var outputText = "";
+
+      for (var i = 0; i < words.length; i++) {
+        var word = words[i];
+        var highlightedWord = "<span class='highlight'>" + word.substr(0, Math.ceil(word.length / 2)) + "</span>" + word.substr(Math.ceil(word.length / 2));
+        outputText += highlightedWord + " ";
+      }
+
+      document.getElementById("output").innerHTML = outputText;
+    }
+
+    function copyOutput() {
+      var outputElement = document.getElementById("output");
+      var range = document.createRange();
+      range.selectNode(outputElement);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      window.getSelection().removeAllRanges();
+    }
+  </script>
+</body>
+</html>
